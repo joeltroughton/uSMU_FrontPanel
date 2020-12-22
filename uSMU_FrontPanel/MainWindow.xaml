@@ -1,0 +1,94 @@
+﻿<Window x:Class="uSMU_FrontPanel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:uSMU_FrontPanel"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+
+        mc:Ignorable="d"
+        Title="MainWindow" Height="420" Width="950">
+
+    <Border Padding="5">
+
+        <Grid>
+
+
+            <Grid Margin="5,5,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width ="0.5*" />
+                    <ColumnDefinition Width ="*" />
+                    <ColumnDefinition Width ="*" />
+                </Grid.ColumnDefinitions>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Grid.Column="0" Margin="0,0,5,0">
+
+                        <ComboBox Name="portsbox" Text="Select port" SelectionChanged="Portsbox_SelectionChanged" SelectedIndex="1" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width ="*" />
+                                <ColumnDefinition Width ="*" />
+
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" Content="Connect" x:Name="connect" Click="Connect_Click" />
+                            <Button Grid.Column="1" Content="Disconnect" x:Name="disconnect" Click="Disconnect_Click" />
+                        </Grid>
+                        <TextBox Height="23" TextWrapping="Wrap" Text="Disconnected"  x:Name="status" />
+
+                        <Button x:Name="ampEn" Click="ampEn_Click" Height="24" Content="SMU Enable" Margin="0,20,0,0"/>
+                        <Button x:Name="ampDis" Click="ampDis_Click" Height="24" Content="SMU Disable"/>
+                        <TextBlock Text="Set voltage (V)" Margin="0,10,0,0"/>
+                        <xctk:DecimalUpDown  x:Name="setVoltageTextBox"  Height="32" Text="0" Increment="0.01" Maximum="5" Minimum="-5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ValueChanged="voltageBox_ValueChanged" FontSize="24" FontFamily="Consolas" Panel.ZIndex="3" TextAlignment="Center" />
+
+                        <TextBlock Text="Current limit (mA)" Margin="0,10,0,0"/>
+                        <xctk:DecimalUpDown x:Name="currentLimitTextBox" Height="32" Watermark="Enter current limit (mA)" Increment="0.5" Maximum="40" Minimum="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" ValueChanged="currentLimitTextBox_ValueChanged" Text="10" FontFamily="Consolas" FontSize="24" TextAlignment="Center" />
+
+                        <TextBlock Text="Update speed" Margin="0,10,0,0"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width ="5*" />
+                                <ColumnDefinition Width ="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Slider x:Name="osrSlider" Grid.Column="0" SelectionEnd="1" SelectionStart="50" AutoToolTipPlacement="None" SmallChange="1" TickPlacement="BottomRight" Value="5" Delay="200" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Maximum="25" Interval="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" UseLayoutRounding="False" VerticalContentAlignment="Top" IsSnapToTickEnabled="True" IsDirectionReversed="True" ValueChanged="osrSlider_ValueChanged" Focusable="False"/>
+                            <TextBox x:Name="osrSliderText" Grid.Column="1" Text="{Binding ElementName=osrSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Center" Width="25" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        </Grid>
+
+                        <Button x:Name="clearGraphButton" Height="24" Margin="0,10,0,0" Content="Clear graph" Click="clearGraphButton_Click"/>
+                        <Button x:Name="exportDataButton" Height="24" Margin="0,0,0,0" Content="Export data" Click="export_Click"/>
+
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center"  Margin="10,0,0,0">
+                    <TextBlock x:Name="currentTextBlock" Text="-.--- mA" Foreground="DarkOrange" Height="72" FontFamily="Consolas" FontSize="60" FontWeight="Bold" FontStyle="Normal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,20,0,0"/>
+                    <TextBlock x:Name="voltageTextBlock" Text="-.--- V" Foreground="DodgerBlue" Height="72" FontFamily="Consolas" FontSize="60" FontWeight="Bold" FontStyle="Normal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,0,0,0"/>
+                </StackPanel>
+
+
+                <DockPanel Grid.Column="2" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <WpfPlot Name="iPlot" Grid.Row="0"/>
+                        <WpfPlot Name="vPlot" Grid.Row="1"/>
+
+                    </Grid>
+
+
+                </DockPanel>
+            </Grid>
+
+        </Grid>
+    </Border>
+</Window>
